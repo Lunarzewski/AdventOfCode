@@ -17,3 +17,6 @@ def challenge_2():
 if __name__ == '__main__':
     challenge_1()
     challenge_2()
+
+class Directory:
+    def __init
