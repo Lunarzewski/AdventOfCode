@@ -50,13 +50,16 @@ def challenge_2(inst_list):
                     for i, knot in enumerate(snake[2:]):
                         if (snake[i+1][0] - knot[0]) ** 2 > 1:
                             knot[0] -= 1
-                            knot[1] = snake[i+1][1]
+                            if knot[1] != snake[i+1][1] and snake[i+1][1] < knot[1]:
+                                knot[1] -= 1
+                            if knot[1] != snake[i+1][1] and snake[i+1][1] > knot[1]:
+                                knot[1] += 1
                         if (snake[i+1][1] - knot[1]) ** 2 > 1 and snake[i+1][1] < knot[1]:
+                            knot[0] -= 1
                             knot[1] = snake[i+1][1] + 1
-                            knot[0] = snake[i+1][0]
                         if (snake[i+1][1] - knot[1]) ** 2 > 1 and snake[i+1][1] > knot[1]:
+                            knot[0] -= 1
                             knot[1] = snake[i+1][1] - 1
-                            knot[0] = snake[i + 1][0]
                 case 'U':
                     snake[0][0] += 1
                     if (snake[0][0] - snake[1][0]) ** 2 > 1:
@@ -65,14 +68,16 @@ def challenge_2(inst_list):
                     for i, knot in enumerate(snake[2:]):
                         if (snake[i + 1][0] - knot[0]) ** 2 > 1:
                             knot[0] += 1
-                            knot[1] = snake[i + 1][1]
+                            if knot[1] != snake[i + 1][1] and snake[i + 1][1] < knot[1]:
+                                knot[1] -= 1
+                            if knot[1] != snake[i + 1][1] and snake[i + 1][1] > knot[1]:
+                                knot[1] += 1
                         if (snake[i + 1][1] - knot[1]) ** 2 > 1 and snake[i + 1][1] < knot[1]:
+                            knot[0] += 1
                             knot[1] = snake[i + 1][1] + 1
-                            knot[0] = snake[i + 1][0]
                         if (snake[i + 1][1] - knot[1]) ** 2 > 1 and snake[i + 1][1] > knot[1]:
+                            knot[0] += 1
                             knot[1] = snake[i + 1][1] - 1
-                            knot[0] = snake[i + 1][0]
-
                 case 'L':
                     snake[0][1] -= 1
                     if (snake[0][1] - snake[1][1]) ** 2 > 1:
@@ -81,13 +86,16 @@ def challenge_2(inst_list):
                     for i, knot in enumerate(snake[2:]):
                         if (snake[i+1][1] - knot[1]) ** 2 > 1:
                             knot[1] -= 1
-                            knot[0] = snake[i+1][1]
+                            if knot[0] != snake[i+1][0] and snake[i+1][0] < knot[0]:
+                                knot[0] -= 1
+                            if knot[0] != snake[i+1][0] and snake[i+1][0] > knot[0]:
+                                knot[0] += 1
                         if (snake[i+1][0] - knot[0]) ** 2 > 1 and snake[i+1][0] < knot[0]:
+                            knot[1] -= 1
                             knot[1] = snake[i+1][1] + 1
-                            knot[0] = snake[i+1][0]
                         if (snake[i+1][0] - knot[0]) ** 2 > 1 and snake[i+1][0] > knot[0]:
+                            knot[1] -= 1
                             knot[0] = snake[i+1][0] - 1
-                            knot[1] = snake[i + 1][1]
                 case 'R':
                     snake[0][1] += 1
                     if (snake[0][1] - snake[1][1]) ** 2 > 1:
@@ -96,13 +104,16 @@ def challenge_2(inst_list):
                     for i, knot in enumerate(snake[2:]):
                         if (snake[i + 1][1] - knot[1]) ** 2 > 1:
                             knot[1] += 1
-                            knot[0] = snake[i + 1][1]
+                            if knot[0] != snake[i+1][0] and snake[i+1][0] < knot[0]:
+                                knot[0] -= 1
+                            if knot[0] != snake[i+1][0] and snake[i+1][0] > knot[0]:
+                                knot[0] += 1
                         if (snake[i + 1][0] - knot[0]) ** 2 > 1 and snake[i + 1][0] < knot[0]:
+                            knot[1] += 1
                             knot[1] = snake[i + 1][1] + 1
-                            knot[0] = snake[i + 1][0]
                         if (snake[i + 1][0] - knot[0]) ** 2 > 1 and snake[i + 1][0] > knot[0]:
+                            knot[1] += 1
                             knot[0] = snake[i + 1][0] - 1
-                            knot[1] = snake[i + 1][1]
 
         trail.append(snake[-1].copy())
     unique_spaces = [list(mark) for mark in set(tuple(mark) for mark in trail)]
