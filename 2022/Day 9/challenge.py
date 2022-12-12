@@ -44,80 +44,62 @@ def challenge_2(inst_list):
             match inst[0]:
                 case 'D':
                     snake[0][0] -= 1
-                    if (snake[0][0] - snake[1][0]) ** 2 > 1:
-                        snake[1][0] -= 1
-                        snake[1][1] = snake[0][1]
-                    for i, knot in enumerate(snake[2:]):
-                        if (snake[i+1][0] - knot[0]) ** 2 > 1:
-                            knot[0] -= 1
-                            if knot[1] != snake[i+1][1] and snake[i+1][1] < knot[1]:
-                                knot[1] -= 1
-                            if knot[1] != snake[i+1][1] and snake[i+1][1] > knot[1]:
-                                knot[1] += 1
-                        if (snake[i+1][1] - knot[1]) ** 2 > 1 and snake[i+1][1] < knot[1]:
-                            knot[0] -= 1
-                            knot[1] = snake[i+1][1] + 1
-                        if (snake[i+1][1] - knot[1]) ** 2 > 1 and snake[i+1][1] > knot[1]:
-                            knot[0] -= 1
-                            knot[1] = snake[i+1][1] - 1
                 case 'U':
                     snake[0][0] += 1
-                    if (snake[0][0] - snake[1][0]) ** 2 > 1:
-                        snake[1][0] += 1
-                        snake[1][1] = snake[0][1]
-                    for i, knot in enumerate(snake[2:]):
-                        if (snake[i + 1][0] - knot[0]) ** 2 > 1:
-                            knot[0] += 1
-                            if knot[1] != snake[i + 1][1] and snake[i + 1][1] < knot[1]:
-                                knot[1] -= 1
-                            if knot[1] != snake[i + 1][1] and snake[i + 1][1] > knot[1]:
-                                knot[1] += 1
-                        if (snake[i + 1][1] - knot[1]) ** 2 > 1 and snake[i + 1][1] < knot[1]:
-                            knot[0] += 1
-                            knot[1] = snake[i + 1][1] + 1
-                        if (snake[i + 1][1] - knot[1]) ** 2 > 1 and snake[i + 1][1] > knot[1]:
-                            knot[0] += 1
-                            knot[1] = snake[i + 1][1] - 1
                 case 'L':
                     snake[0][1] -= 1
-                    if (snake[0][1] - snake[1][1]) ** 2 > 1:
-                        snake[1][1] -= 1
-                        snake[1][0] = snake[0][0]
-                    for i, knot in enumerate(snake[2:]):
-                        if (snake[i+1][1] - knot[1]) ** 2 > 1:
-                            knot[1] -= 1
-                            if knot[0] != snake[i+1][0] and snake[i+1][0] < knot[0]:
-                                knot[0] -= 1
-                            if knot[0] != snake[i+1][0] and snake[i+1][0] > knot[0]:
-                                knot[0] += 1
-                        if (snake[i+1][0] - knot[0]) ** 2 > 1 and snake[i+1][0] < knot[0]:
-                            knot[1] -= 1
-                            knot[1] = snake[i+1][1] + 1
-                        if (snake[i+1][0] - knot[0]) ** 2 > 1 and snake[i+1][0] > knot[0]:
-                            knot[1] -= 1
-                            knot[0] = snake[i+1][0] - 1
                 case 'R':
                     snake[0][1] += 1
-                    if (snake[0][1] - snake[1][1]) ** 2 > 1:
-                        snake[1][1] += 1
-                        snake[1][0] = snake[0][0]
-                    for i, knot in enumerate(snake[2:]):
-                        if (snake[i + 1][1] - knot[1]) ** 2 > 1:
-                            knot[1] += 1
-                            if knot[0] != snake[i+1][0] and snake[i+1][0] < knot[0]:
-                                knot[0] -= 1
-                            if knot[0] != snake[i+1][0] and snake[i+1][0] > knot[0]:
-                                knot[0] += 1
-                        if (snake[i + 1][0] - knot[0]) ** 2 > 1 and snake[i + 1][0] < knot[0]:
-                            knot[1] += 1
-                            knot[1] = snake[i + 1][1] + 1
-                        if (snake[i + 1][0] - knot[0]) ** 2 > 1 and snake[i + 1][0] > knot[0]:
-                            knot[1] += 1
-                            knot[0] = snake[i + 1][0] - 1
+            for i, knot in enumerate(snake[1:]):
+                if verticle_distance(i, knot, snake) and horizontal_distance(i, knot, snake):
+                    if head_to_right(i, knot, snake):
+                        knot[1] += 1
+                    if head_to_left(i, knot, snake):
+                        knot[1] -= 1
+                    if head_above(i, knot, snake):
+                        knot[0] += 1
+                    if head_below(i, knot, snake):
+                        knot[0] -= 1
+                if verticle_distance(i, knot, snake):
+                    knot[1] = snake[i][1]
+                    if head_above(i, knot, snake):
+                        knot[0] += 1
+                    if head_below(i, knot, snake):
+                        knot[0] -= 1
+                if horizontal_distance(i, knot, snake):
+                    if head_to_right(i, knot, snake):
+                        knot[1] += 1
+                    if head_to_left(i, knot, snake):
+                        knot[1] -= 1
+                    knot[0] = snake[i][0]
+            trail.append(snake[-1].copy())
 
-        trail.append(snake[-1].copy())
     unique_spaces = [list(mark) for mark in set(tuple(mark) for mark in trail)]
     print(len(unique_spaces))
+
+
+def head_to_left(i, knot, snake):
+    return snake[i][1] < knot[1]
+
+
+def head_to_right(i, knot, snake):
+    return snake[i][1] > knot[1]
+
+
+def head_above(i, knot, snake):
+    return snake[i][0] > knot[0]
+
+
+def head_below(i, knot, snake):
+    return snake[i][0] < knot[0]
+
+
+def horizontal_distance(i, knot, snake):
+    return (snake[i][1] - knot[1]) ** 2 > 1
+
+
+def verticle_distance(i, knot, snake):
+    return (snake[i][0] - knot[0]) ** 2 > 1
 
 
 if __name__ == '__main__':
